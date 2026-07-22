@@ -89,8 +89,9 @@ def build_svg(rows):
                 out.append(f'<circle cx="{px(x + 0.5)}" cy="{py(y + 0.5)}" '
                            f'r="{TILE*0.11:.2f}" fill="{PELLET}"/>')
             elif ch == "*":
-                out.append(f'<circle cx="{px(x + 0.5)}" cy="{py(y + 0.5)}" '
-                           f'r="{TILE*0.28:.2f}" fill="{PAC}"/>')
+                out.append(f'<text x="{px(x + 0.5)}" y="{py(y + 0.5)}" '
+                           f'font-size="{TILE*0.9:.1f}" text-anchor="middle" '
+                           f'dominant-baseline="central">🍒</text>')
             elif ch == "P":
                 pac = (x, y)
             elif ch in GHOST_COLORS:

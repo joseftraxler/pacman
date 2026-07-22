@@ -58,7 +58,7 @@
 <rect x="704.08" y="72.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <rect x="2.08" y="98.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <circle cx="39.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
-<circle cx="91.0" cy="109.0" r="7.28" fill="#ffe11a"/>
+<text x="91.0" y="109.0" font-size="23.4" text-anchor="middle" dominant-baseline="central">🍒</text>
 <circle cx="117.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="143.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="169.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
@@ -79,7 +79,7 @@
 <circle cx="559.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="585.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="611.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
-<circle cx="637.0" cy="109.0" r="7.28" fill="#ffe11a"/>
+<text x="637.0" y="109.0" font-size="23.4" text-anchor="middle" dominant-baseline="central">🍒</text>
 <circle cx="689.0" cy="109.0" r="2.86" fill="#ffd9a0"/>
 <rect x="704.08" y="98.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <rect x="2.08" y="124.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
@@ -308,7 +308,7 @@
 <rect x="704.08" y="306.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <rect x="2.08" y="332.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <circle cx="39.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
-<circle cx="91.0" cy="343.0" r="7.28" fill="#ffe11a"/>
+<text x="91.0" y="343.0" font-size="23.4" text-anchor="middle" dominant-baseline="central">🍒</text>
 <circle cx="117.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="143.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="169.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
@@ -329,7 +329,7 @@
 <circle cx="559.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="585.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
 <circle cx="611.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
-<circle cx="637.0" cy="343.0" r="7.28" fill="#ffe11a"/>
+<text x="637.0" y="343.0" font-size="23.4" text-anchor="middle" dominant-baseline="central">🍒</text>
 <circle cx="689.0" cy="343.0" r="2.86" fill="#ffd9a0"/>
 <rect x="704.08" y="332.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>
 <rect x="2.08" y="358.08" width="21.84" height="21.84" rx="5.72" fill="#1420c8"/>

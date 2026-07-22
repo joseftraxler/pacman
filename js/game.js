@@ -270,16 +270,15 @@ export class Game {
             }
         }
 
-        // Power-pelety – větší a blikající
-        if (Math.floor(this.clock * 4) % 2 === 0) {
-            ctx.fillStyle = '#ffe11a';
-            for (let y = 0; y < this.level.height; y++) {
-                for (let x = 0; x < this.level.width; x++) {
-                    if (this.level.hasPowerPellet(x, y)) {
-                        ctx.beginPath();
-                        ctx.arc(this.px(x + 0.5), this.py(y + 0.5), t * 0.28, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
+        // Power-pelety jako třešně (jemné pulzování velikosti místo blikání)
+        const scale = 0.86 + 0.08 * Math.sin(this.clock * 3);
+        ctx.font = `${(t * scale).toFixed(1)}px "Courier New", monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (let y = 0; y < this.level.height; y++) {
+            for (let x = 0; x < this.level.width; x++) {
+                if (this.level.hasPowerPellet(x, y)) {
+                    ctx.fillText('🍒', this.px(x + 0.5), this.py(y + 0.5));
                 }
             }
         }

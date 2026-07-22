@@ -109,7 +109,26 @@ def build(level):
     for (gx, gy, letter) in ghosts:
         place(g, gx, gy, letter)
 
+    place_power_pellets(g)
+
     return g, player, ghosts
+
+
+def place_power_pellets(g, count=4):
+    """Rozmístí power-pelety (*) poblíž rohů – nahrazuje jen existující tečky,
+    takže nikdy nekoliduje se zdí ani s entitou."""
+    candidates = [
+        (2, 2), (W - 3, 2), (2, H - 3), (W - 3, H - 3),
+        (3, 2), (W - 4, 2), (3, H - 3), (W - 4, H - 3),
+        (2, 3), (W - 3, 3), (2, H - 4), (W - 3, H - 4),
+    ]
+    placed = 0
+    for (x, y) in candidates:
+        if placed >= count:
+            break
+        if g[y][x] == '-':
+            g[y][x] = '*'
+            placed += 1
 
 
 def fill_open(g, x1, y1, x2, y2):
@@ -142,11 +161,11 @@ def validate(level, g, player, ghosts):
                 seen[ny][nx] = True
                 q.append((nx, ny))
 
-    # každá tečka musí být dosažitelná
+    # každá tečka (i power-peleta) musí být dosažitelná
     pellets = 0
     for y in range(H):
         for x in range(W):
-            if g[y][x] == '-':
+            if g[y][x] in ('-', '*'):
                 pellets += 1
                 if not seen[y][x]:
                     errors.append(f"nedosažitelná tečka na ({x},{y})")

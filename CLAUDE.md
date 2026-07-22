@@ -52,13 +52,21 @@ nezávisle na čase i na hře).
 - **`ghostSpeed`** = rychlost duchů v **procentech rychlosti hráče** (100 = stejně
   rychlí jako hráč). Skutečná rychlost se počítá v `Game.loadLevel`
   (`playerSpeed = 6.5`).
-- **řádky mapy** – legenda: `#` zeď, `-` tečka, `P` hráč, `R`/`G`/`B`/`O` duchové
-  (červený/zelený/modrý/oranžový), mezera = průchozí prázdno bez tečky.
+- **řádky mapy** – legenda: `#` zeď, `-` tečka, `*` power-peleta, `P` hráč,
+  `R`/`G`/`B`/`O` duchové (červený/zelený/modrý/oranžový), mezera = průchozí prázdno.
 
-Každá `-` musí být dosažitelná a nikde nesmí být uzavřená oblast, jinak level nejde
-dokončit (`pelletCount` nikdy nedosáhne 0). Po úpravě mapy vždy **ověř souvislost**:
-BFS ze startu hráče (`P`) musí projít každou tečku `-` a všechny duchy. Řádek má
-28 znaků, mapa 14 řádků.
+`pelletCount` zahrnuje tečky `-` i power-pelety `*`; level je hotový, až se sní vše.
+Každá `-`/`*` musí být dosažitelná a nikde nesmí být uzavřená oblast, jinak level
+nejde dokončit. Po úpravě mapy vždy **ověř souvislost**: BFS ze startu hráče (`P`)
+musí projít každou tečku i power-peletu a všechny duchy. Řádek má 28 znaků, 14 řádků.
+
+## Vystrašený režim duchů
+
+Snědení `*` zapne `Game.frightTimer` (7 s). `Game` každý frame nastavuje duchům
+`frightened`/`frightenedBlink` (a `eaten` po snědení) – entita si stav jen čte, o
+logice rozhoduje `Game`. Vystrašený duch je pomalejší a utíká; po srážce ho hráč
+sní (bonus 200/400/800/1600 přes `frightCombo`), duch jako `eaten` (oči) se vrátí
+na start a ožije. `Ghost.currentSpeed`/`decide`/`draw` větví podle těchto stavů.
 
 Mapy staví a BFS-em validuje generátor `tools/gen_levels.py`
 (`python3 tools/gen_levels.py`) – definuje je programově a přepíše `js/levels/*.js`.

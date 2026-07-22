@@ -13,6 +13,7 @@ export const GHOST_COLORS = {
  * Legenda znaků:
  *   #        zeď
  *   -        tečka (pellet) ke snědení
+ *   *        power-peleta (zapne vystrašený režim duchů)
  *   P        startovní pozice pacmana
  *   R/G/B/O  startovní pozice duchů (barva dle znaku)
  *   mezera   prázdné políčko (bez tečky)
@@ -26,7 +27,8 @@ export class Level {
 
         this.walls = [];        // walls[y][x] = true, pokud je zeď
         this.pellets = [];      // pellets[y][x] = true, pokud je tečka
-        this.pelletCount = 0;   // počet zbývajících teček
+        this.powerPellets = []; // powerPellets[y][x] = true, pokud je power-peleta
+        this.pelletCount = 0;   // počet zbývajících teček (včetně power-pelet)
         this.ghostSpawns = [];  // [{x, y, color}]
         this.playerSpawn = {x: 1, y: 1};
 
@@ -37,12 +39,14 @@ export class Level {
         for (let y = 0; y < this.height; y++) {
             const wallRow = [];
             const pelletRow = [];
+            const powerRow = [];
             const row = this.rows[y] ?? '';
 
             for (let x = 0; x < this.width; x++) {
                 const ch = row[x] ?? '#';
                 let isWall = false;
                 let isPellet = false;
+                let isPower = false;
 
                 switch (ch) {
                     case '#':
@@ -50,6 +54,10 @@ export class Level {
                         break;
                     case '-':
                         isPellet = true;
+                        this.pelletCount++;
+                        break;
+                    case '*':
+                        isPower = true;
                         this.pelletCount++;
                         break;
                     case 'P':
@@ -65,10 +73,12 @@ export class Level {
 
                 wallRow.push(isWall);
                 pelletRow.push(isPellet);
+                powerRow.push(isPower);
             }
 
             this.walls.push(wallRow);
             this.pellets.push(pelletRow);
+            this.powerPellets.push(powerRow);
         }
     }
 
@@ -95,6 +105,23 @@ export class Level {
     eatPellet(x, y) {
         if (this.hasPellet(x, y)) {
             this.pellets[y][x] = false;
+            this.pelletCount--;
+            return true;
+        }
+        return false;
+    }
+
+    hasPowerPellet(x, y) {
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
+            return false;
+        }
+        return this.powerPellets[y][x];
+    }
+
+    // Sní power-peletu, vrátí true, pokud tam nějaká byla
+    eatPowerPellet(x, y) {
+        if (this.hasPowerPellet(x, y)) {
+            this.powerPellets[y][x] = false;
             this.pelletCount--;
             return true;
         }

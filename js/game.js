@@ -18,6 +18,10 @@ export class Game {
         this.state = 'ready';
         this.stateTimer = 0;
 
+        this.clock = 0;         // běží pořád, pro blikání (power-pelety, konec režimu)
+        this.frightTimer = 0;   // zbývající čas vystrašeného režimu (s)
+        this.frightCombo = 0;   // počet duchů snědených v aktuálním režimu (bonus)
+
         this.loadLevel();
         this.bindInput();
         this.resize();
@@ -41,6 +45,9 @@ export class Game {
         this.ghosts = this.level.ghostSpawns.map(g =>
             new Ghost(this, g.x, g.y, ghostSpeed, g.color)
         );
+
+        this.frightTimer = 0;
+        this.frightCombo = 0;
     }
 
     resetPositions() {
@@ -49,6 +56,8 @@ export class Game {
             g.reset();
             g.dir = ALL_DIRS[Math.floor(Math.random() * ALL_DIRS.length)];
         });
+        this.frightTimer = 0;
+        this.frightCombo = 0;
     }
 
     bindInput() {
@@ -131,6 +140,8 @@ export class Game {
     }
 
     update(dt) {
+        this.clock += dt; // pro blikání, běží nezávisle na stavu
+
         if (this.state === 'dying') {
             this.stateTimer -= dt;
             if (this.stateTimer <= 0) {
@@ -148,12 +159,31 @@ export class Game {
             return;
         }
 
+        // Vystrašený režim: odečteme čas a nastavíme stav duchům před pohybem
+        this.frightTimer = Math.max(0, this.frightTimer - dt);
+        const blinkOn = Math.floor(this.clock * 6) % 2 === 0;
+        for (const g of this.ghosts) {
+            g.frightened = this.frightTimer > 0 && !g.eaten;
+            g.frightenedBlink = g.frightened && this.frightTimer < 2 && blinkOn;
+        }
+
         this.player.step(dt);
         this.ghosts.forEach(g => g.step(dt));
 
         // O snědení tečky a skóre rozhoduje hra, ne hráč
         if (this.level.eatPellet(this.player.tileX, this.player.tileY)) {
             this.score += 10;
+        }
+
+        // Power-peleta zapne vystrašený režim
+        if (this.level.eatPowerPellet(this.player.tileX, this.player.tileY)) {
+            this.score += 50;
+            this.frightTimer = 7;
+            this.frightCombo = 0;
+            // Okamžitě vystrašíme duchy, ať je lze sníst i při srážce v tomto framu
+            for (const g of this.ghosts) {
+                if (!g.eaten) g.frightened = true;
+            }
         }
 
         this.checkCollisions();
@@ -166,8 +196,19 @@ export class Game {
 
     checkCollisions() {
         for (const g of this.ghosts) {
+            if (g.eaten) continue; // snědený duch (oči) neubližuje ani se nedá sníst
+
             const dist = Math.hypot(g.x - this.player.x, g.y - this.player.y);
-            if (dist < 0.6) {
+            if (dist >= 0.6) continue;
+
+            if (g.frightened) {
+                // Sníme ducha -> vrací se domů, bonus se zdvojnásobuje (200/400/800/1600)
+                g.eaten = true;
+                g.frightened = false;
+                this.score += 200 * (2 ** this.frightCombo);
+                this.frightCombo++;
+            } else {
+                // Normální duch -> ztráta života
                 this.lives--;
                 this.state = 'dying';
                 this.stateTimer = 1.0;
@@ -216,6 +257,8 @@ export class Game {
     drawPellets() {
         const ctx = this.ctx;
         const t = this.tile;
+
+        // Obyčejné tečky
         ctx.fillStyle = '#ffd9a0';
         for (let y = 0; y < this.level.height; y++) {
             for (let x = 0; x < this.level.width; x++) {
@@ -223,6 +266,20 @@ export class Game {
                     ctx.beginPath();
                     ctx.arc(this.px(x + 0.5), this.py(y + 0.5), t * 0.11, 0, Math.PI * 2);
                     ctx.fill();
+                }
+            }
+        }
+
+        // Power-pelety – větší a blikající
+        if (Math.floor(this.clock * 4) % 2 === 0) {
+            ctx.fillStyle = '#ffe11a';
+            for (let y = 0; y < this.level.height; y++) {
+                for (let x = 0; x < this.level.width; x++) {
+                    if (this.level.hasPowerPellet(x, y)) {
+                        ctx.beginPath();
+                        ctx.arc(this.px(x + 0.5), this.py(y + 0.5), t * 0.28, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
                 }
             }
         }

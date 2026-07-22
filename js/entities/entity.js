@@ -42,7 +42,7 @@ export class Entity {
     }
 
     step(dt) {
-        let remaining = this.speed * dt;
+        let remaining = this.currentSpeed() * dt;
         let guard = 0;
 
         while (remaining > 1e-9 && guard++ < 1000) {
@@ -74,6 +74,11 @@ export class Entity {
 
     // Přepíší potomci: rozhodnutí o směru ve středu políčka
     decide() {
+    }
+
+    // Aktuální rychlost (políček/s). Potomci mohou přepsat (např. zpomalení).
+    currentSpeed() {
+        return this.speed;
     }
 
     /**

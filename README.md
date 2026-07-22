@@ -6,6 +6,8 @@ běží celý na HTML `<canvas>`. Bez frameworků, bez závislostí, bez build k
 Hra obsahuje 10 úrovní s postupně rostoucí obtížností – přibývá duchů, houstne
 bludiště a zrychlují se protivníci.
 
+**▶️ Zahrát online: <https://joseftraxler.github.io/pacman/>**
+
 ## Ovládání
 
 | Akce      | Klávesy                     |

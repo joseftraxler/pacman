@@ -8,6 +8,8 @@ bludiště a zrychlují se protivníci.
 
 **▶️ Zahrát online: <https://joseftraxler.github.io/pacman/>**
 
+![Náhled hry Pac-Man – 7. úroveň s bludištěm a čtyřmi duchy](docs/preview.svg)
+
 ## Ovládání
 
 | Akce      | Klávesy                     |

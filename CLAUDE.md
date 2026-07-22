@@ -70,6 +70,13 @@ Při úpravách levelů uprav a spusť ten (je idempotentní), místo ručního 
 2. Naimportuj a přidej do pole `levels` v `js/scripts.js`. Pořadí = pořadí ve hře.
 3. Rychlost duchů napříč levely roste lineárně 45 % → 90 % (level 1 → 10).
 
+## Náhled do README
+
+`docs/preview.svg` (obrázek v README) generuje `tools/render_preview.py`
+(`python3 tools/render_preview.py [levelX]`) stejnými tvary/barvami jako `game.js`.
+Po vizuální změně vykreslování ho přegeneruj, ať náhled sedí. Není to skutečný
+screenshot (v tomto prostředí není prohlížeč), ale věrný vektorový náhled.
+
 ## Konvence
 
 - **Komentáře a texty v UI česky, s plnou diakritikou.** Identifikátory anglicky.

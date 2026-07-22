@@ -12,11 +12,11 @@ bludiště a zrychlují se protivníci.
 
 ## Ovládání
 
-| Akce      | Klávesy                     |
-|-----------|-----------------------------|
-| Pohyb     | šipky nebo `W` `A` `S` `D`  |
-| Pauza     | `mezerník` nebo `Enter`     |
-| Start / pokračování / restart | `mezerník` nebo `Enter` |
+| Akce      | Klávesy                     | Dotyk                    |
+|-----------|-----------------------------|--------------------------|
+| Pohyb     | šipky nebo `W` `A` `S` `D`  | tažení (swipe) ve směru  |
+| Pauza     | `mezerník` nebo `Enter`     | ťuknutí                  |
+| Start / pokračování / restart | `mezerník` nebo `Enter` | ťuknutí          |
 
 Cílem je sníst všechny tečky v úrovni a přitom se vyhnout duchům. Po dokončení
 úrovně se stiskem klávesy pokračuje na další; po zdolání poslední úrovně hra končí
@@ -45,11 +45,21 @@ npx serve
 
 Poté otevři `http://localhost:8000` v prohlížeči.
 
+## Instalace (PWA)
+
+Hra je progresivní webová aplikace – z prohlížeče ji lze **nainstalovat** (na ploše
+„Instalovat aplikaci", na mobilu „Přidat na plochu") a díky service workeru pak
+**běží i offline**. Stačí navštívit [živou verzi](https://joseftraxler.github.io/pacman/)
+a použít nabídku instalace.
+
 ## Struktura projektu
 
 ```
 index.html              vstupní stránka s <canvas>
 css/styles.css          roztažení plátna přes celé okno
+manifest.json           PWA manifest (instalace hry)
+sw.js                   service worker (běh offline)
+icon.svg                ikona aplikace
 js/
 ├── scripts.js          bootstrap – canvas, ovládání, seznam levelů, spuštění hry
 ├── game.js             Game – herní smyčka, stavy, kolize, vykreslování prostředí

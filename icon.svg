@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#000000"/>
+  <!-- pacman (pusa vpravo), celý v bezpečné zóně pro maskable ikony -->
+  <path d="M256 256 L382.6 175.6 A150 150 0 1 0 382.6 336.4 Z" fill="#ffe11a"/>
+  <circle cx="238" cy="190" r="18" fill="#000000"/>
+  <!-- tečky -->
+  <circle cx="412" cy="256" r="13" fill="#ffd9a0"/>
+  <circle cx="448" cy="256" r="13" fill="#ffd9a0"/>
+</svg>

@@ -38,6 +38,21 @@ Ostatní moduly: `level.js` (parsování mapy), `directions.js` (směry + `isRev
 `input.js` (mapování kláves na akce), `scripts.js` (bootstrap – canvas, seznam
 levelů, ovládání, spuštění).
 
+## Ovládání
+
+Klávesy i dotyk vedou do jedné metody `Game.handleAction(action)` (action =
+`left`/`right`/`up`/`down`/`pause`). Klávesnice mapuje přes `input.js`, dotyk řeší
+`Game.bindTouch` (swipe = směr, ťuknutí = pauza/start). Nové vstupy směruj taky do
+`handleAction`, ať se logika neduplikuje.
+
+## PWA / offline
+
+Hra je instalovatelná PWA: `manifest.json`, `icon.svg`, service worker `sw.js`
+(registruje se v `scripts.js`). `sw.js` cachuje pevný seznam `ASSETS` (cache-first).
+**Když přidáš/přejmenuješ soubor** (modul, level, asset), přidej ho do `ASSETS`
+**a zvyš verzi** `CACHE` (`pacman-vN`) – jinak se offline načte stará verze nebo
+soubor bude chybět. Levely 1–10 se v `ASSETS` generují smyčkou; jiný počet uprav.
+
 ## Pohybový model
 
 Entity se pohybují plynule v jednotkách políček, ale **o směru se rozhoduje vždy

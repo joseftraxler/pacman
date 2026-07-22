@@ -34,3 +34,11 @@ const controls = {
 };
 
 new Game(canvas, levels, controls);
+
+// Service worker – umožní instalaci hry a běh offline (PWA)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // '../sw.js' vůči tomuto modulu = kořen webu (scope celé hry)
+        navigator.serviceWorker.register(new URL('../sw.js', import.meta.url)).catch(() => {});
+    });
+}

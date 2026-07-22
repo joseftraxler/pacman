@@ -1,0 +1,19 @@
+{
+  "name": "Pac-Man",
+  "short_name": "Pac-Man",
+  "description": "Klon klasické arkádové hry Pac-Man – 10 úrovní, ovládání klávesnicí i dotykem.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -65,25 +65,63 @@ export class Game {
             const action = actionForEvent(this.keyMap, e);
             if (!action) return;
             e.preventDefault();
+            this.handleAction(action);
+        });
+        this.bindTouch();
+    }
 
-            if (action === 'pause') {
-                this.handleActionKey();
+    // Zpracuje jednu akci (left/right/up/down/pause) – společné pro klávesy i dotyk
+    handleAction(action) {
+        if (action === 'pause') {
+            this.handleActionKey();
+            return;
+        }
+
+        if (this.state === 'ready') {
+            this.state = 'playing';
+        }
+
+        if (this.state === 'playing') {
+            const want = DIRS[action];
+            this.player.nextDir = want;
+            // Otočení o 180° lze provést okamžitě (couváme po již projeté cestě)
+            if (isReverse(want, this.player.dir)) {
+                this.player.dir = want;
+            }
+        }
+    }
+
+    // Dotykové ovládání: tažení = směr, ťuknutí = start/pauza
+    bindTouch() {
+        const THRESHOLD = 24; // px, kratší pohyb bereme jako ťuknutí
+        let sx = 0, sy = 0;
+
+        this.c.addEventListener('touchstart', e => {
+            const t = e.changedTouches[0];
+            sx = t.clientX;
+            sy = t.clientY;
+            e.preventDefault();
+        }, {passive: false});
+
+        // Bránění scrollu/zoomu při tažení po herní ploše
+        this.c.addEventListener('touchmove', e => e.preventDefault(), {passive: false});
+
+        this.c.addEventListener('touchend', e => {
+            e.preventDefault();
+            const t = e.changedTouches[0];
+            const dx = t.clientX - sx;
+            const dy = t.clientY - sy;
+
+            if (Math.abs(dx) < THRESHOLD && Math.abs(dy) < THRESHOLD) {
+                this.handleAction('pause'); // ťuknutí = start / pauza / restart
                 return;
             }
 
-            if (this.state === 'ready') {
-                this.state = 'playing';
-            }
-
-            if (this.state === 'playing') {
-                const want = DIRS[action];
-                this.player.nextDir = want;
-                // Otočení o 180° lze provést okamžitě (couváme po již projeté cestě)
-                if (isReverse(want, this.player.dir)) {
-                    this.player.dir = want;
-                }
-            }
-        });
+            const action = Math.abs(dx) > Math.abs(dy)
+                ? (dx > 0 ? 'right' : 'left')
+                : (dy > 0 ? 'down' : 'up');
+            this.handleAction(action);
+        }, {passive: false});
     }
 
     handleActionKey() {

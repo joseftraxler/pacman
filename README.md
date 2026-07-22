@@ -22,10 +22,11 @@ Cílem je sníst všechny tečky v úrovni a přitom se vyhnout duchům. Po doko
 úrovně se stiskem klávesy pokračuje na další; po zdolání poslední úrovně hra končí
 vítězstvím. Srážka s duchem stojí jeden život, po ztrátě všech tří životů hra končí.
 
-Ve všech úrovních jsou **power-pelety** – třešně 🍒 v rozích. Po jejím
-snědení se duchové na několik sekund vystraší – zmodrají, zpomalí a utíkají. V tu
-chvíli je můžeš sníst za bonusové body (200 → 400 → 800 → 1600 za každého dalšího
-v jednom režimu); snědený duch se v podobě očí vrátí na svůj start a ožije.
+Ve všech úrovních je **ovoce** 🍒🍓🍊🍎 v rozích (power-pelety). Po jeho snědení se
+duchové na několik sekund vystraší – zmodrají, zpomalí a utíkají. V tu chvíli je
+můžeš sníst za bonusové body (200 → 400 → 800 → 1600 za každého dalšího v jednom
+režimu); snědený duch se v podobě očí vrátí na svůj start a ožije. Ovoce je
+**volitelné** – k dokončení úrovně stačí sníst všechny tečky, ovoce sníst nemusíš.
 
 ## Spuštění
 
@@ -91,8 +92,8 @@ Legenda znaků mapy:
 | Znak      | Význam                                   |
 |-----------|------------------------------------------|
 | `#`       | zeď                                      |
-| `-`       | tečka ke snědení                         |
-| `*`       | power-peleta (spustí vystrašený režim)   |
+| `-`       | tečka ke snědení (nutná k dokončení)     |
+| `*`       | ovoce / power-peleta (vystrašený režim, volitelné) |
 | `P`       | startovní pozice hráče                    |
 | `R`       | duch – červený                           |
 | `G`       | duch – zelený                            |

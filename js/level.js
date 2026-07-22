@@ -6,14 +6,17 @@ export const GHOST_COLORS = {
     'O': '#ff9d2e', // oranžový
 };
 
+// Druhy ovoce pro power-pelety (přiřazují se v pořadí čtení mapy)
+export const FRUITS = ['🍒', '🍓', '🍊', '🍎', '🍇', '🍑', '🍌', '🍉'];
+
 /**
  * Level rozparsuje mapu předanou jako seznam řádků (stringů).
  * Prvním parametrem je rychlost duchů jako procento rychlosti hráče
  * (100 = stejně rychlí jako hráč, 50 = poloviční rychlost).
  * Legenda znaků:
  *   #        zeď
- *   -        tečka (pellet) ke snědení
- *   *        power-peleta (zapne vystrašený režim duchů)
+ *   -        tečka (pellet) ke snědení – nutná k dokončení levelu
+ *   *        power-peleta jako ovoce (zapne vystrašený režim; volitelná)
  *   P        startovní pozice pacmana
  *   R/G/B/O  startovní pozice duchů (barva dle znaku)
  *   mezera   prázdné políčko (bez tečky)
@@ -27,8 +30,8 @@ export class Level {
 
         this.walls = [];        // walls[y][x] = true, pokud je zeď
         this.pellets = [];      // pellets[y][x] = true, pokud je tečka
-        this.powerPellets = []; // powerPellets[y][x] = true, pokud je power-peleta
-        this.pelletCount = 0;   // počet zbývajících teček (včetně power-pelet)
+        this.powerFruit = [];   // powerFruit[y][x] = emoji ovoce, nebo null
+        this.pelletCount = 0;   // počet zbývajících teček (jen '-', ovoce se nepočítá)
         this.ghostSpawns = [];  // [{x, y, color}]
         this.playerSpawn = {x: 1, y: 1};
 
@@ -36,17 +39,19 @@ export class Level {
     }
 
     #parse() {
+        let fruitIndex = 0; // pro střídání druhů ovoce napříč celou mapou
+
         for (let y = 0; y < this.height; y++) {
             const wallRow = [];
             const pelletRow = [];
-            const powerRow = [];
+            const fruitRow = [];
             const row = this.rows[y] ?? '';
 
             for (let x = 0; x < this.width; x++) {
                 const ch = row[x] ?? '#';
                 let isWall = false;
                 let isPellet = false;
-                let isPower = false;
+                let fruit = null;
 
                 switch (ch) {
                     case '#':
@@ -57,8 +62,8 @@ export class Level {
                         this.pelletCount++;
                         break;
                     case '*':
-                        isPower = true;
-                        this.pelletCount++;
+                        // ovoce se do pelletCount nezapočítává (je volitelné)
+                        fruit = FRUITS[fruitIndex++ % FRUITS.length];
                         break;
                     case 'P':
                         this.playerSpawn = {x, y};
@@ -73,12 +78,12 @@ export class Level {
 
                 wallRow.push(isWall);
                 pelletRow.push(isPellet);
-                powerRow.push(isPower);
+                fruitRow.push(fruit);
             }
 
             this.walls.push(wallRow);
             this.pellets.push(pelletRow);
-            this.powerPellets.push(powerRow);
+            this.powerFruit.push(fruitRow);
         }
     }
 
@@ -111,18 +116,23 @@ export class Level {
         return false;
     }
 
-    hasPowerPellet(x, y) {
+    // Vrátí emoji ovoce na políčku, nebo null
+    fruitAt(x, y) {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
-            return false;
+            return null;
         }
-        return this.powerPellets[y][x];
+        return this.powerFruit[y][x];
     }
 
-    // Sní power-peletu, vrátí true, pokud tam nějaká byla
+    hasPowerPellet(x, y) {
+        return this.fruitAt(x, y) !== null;
+    }
+
+    // Sní power-peletu (ovoce), vrátí true, pokud tam nějaké bylo.
+    // Nemění pelletCount – ovoce je volitelné a k dokončení levelu není potřeba.
     eatPowerPellet(x, y) {
         if (this.hasPowerPellet(x, y)) {
-            this.powerPellets[y][x] = false;
-            this.pelletCount--;
+            this.powerFruit[y][x] = null;
             return true;
         }
         return false;

@@ -20,6 +20,8 @@ PAC = "#ffe11a"
 EYE = "#ffffff"
 PUPIL = "#0018aa"
 GHOST_COLORS = {"R": "#ff0000", "G": "#2ee66b", "B": "#33ddff", "O": "#ff9d2e"}
+# musí odpovídat FRUITS v js/level.js (pořadí = pořadí čtení mapy)
+FRUITS = ["🍒", "🍓", "🍊", "🍎", "🍇", "🍑", "🍌", "🍉"]
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
@@ -77,6 +79,7 @@ def build_svg(rows):
 
     pac = None
     ghosts = []
+    fruit_index = 0
 
     # zdi a tečky
     for y, row in enumerate(rows):
@@ -89,9 +92,11 @@ def build_svg(rows):
                 out.append(f'<circle cx="{px(x + 0.5)}" cy="{py(y + 0.5)}" '
                            f'r="{TILE*0.11:.2f}" fill="{PELLET}"/>')
             elif ch == "*":
+                fruit = FRUITS[fruit_index % len(FRUITS)]
+                fruit_index += 1
                 out.append(f'<text x="{px(x + 0.5)}" y="{py(y + 0.5)}" '
                            f'font-size="{TILE*0.9:.1f}" text-anchor="middle" '
-                           f'dominant-baseline="central">🍒</text>')
+                           f'dominant-baseline="central">{fruit}</text>')
             elif ch == "P":
                 pac = (x, y)
             elif ch in GHOST_COLORS:
